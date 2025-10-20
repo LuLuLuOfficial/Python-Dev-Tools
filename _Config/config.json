@@ -1,0 +1,12 @@
+{
+    "url": {
+        "python_standalone": "",
+        "pyenv_win": "",
+        "pipx": ""
+    },
+    "dir": {
+        "python_standalone": "python_standalone",
+        "pyenv_win": "pyenv_win",
+        "pipx": "pipx"
+    }
+}

@@ -1,0 +1,7 @@
+/pipx/*
+/pyenv_win/*
+/python_standalone/*
+/resource/*
+
+!.gitkeep
+!/resource/packaged
