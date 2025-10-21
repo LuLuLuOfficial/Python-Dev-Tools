@@ -1,7 +1,10 @@
+__pycache__
+
 /pipx/*
 /pyenv_win/*
 /python_standalone/*
 /resource/*
+/test
 
 !.gitkeep
 !/resource/packaged

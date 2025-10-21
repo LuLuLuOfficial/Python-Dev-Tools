@@ -9,6 +9,15 @@ def read(file: str):
         with open(file=file, mode="r", encoding="utf-8") as File:
             data = json_load(File)
     except Exception as E:
-        return False, f"Read Config Error[{pydtconfig_path}]: {E}"
+        return False, f"Read Config Error[{file}]: {E}"
+    else:
+        return True, data
+
+def write(file: str, data: dict | list):
+    try:
+        with open(file=file, mode="w", encoding="utf-8") as File:
+            json_dump(obj=data, fp=File, indent=4, ensure_ascii=True)
+    except Exception as E:
+        return False, f"Write Config Error[{file}]: {E}"
     else:
         return True, data
