@@ -41,5 +41,10 @@ cmd: list[str] = [
     filesdata["config"]["installed"]["poetry"] + " " + " ".join(params).strip()
 ]
 
-state, result = psrun(filesdata["envars"]["poetry"], cmd, path_workdir, path_callBat)
+state, result = psrun(
+    path_workdir = path_workdir,
+    cwd = path_callBat,
+    envars = filesdata["envars"]["poetry"],
+    cmd = cmd
+)
 if not state: print(result)
