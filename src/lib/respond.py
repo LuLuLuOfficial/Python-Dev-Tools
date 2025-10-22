@@ -1,16 +1,21 @@
 from typing import Literal # type: ignore
-from src.lib import config_read
-from src.lib import psrun
 from sys import executable as pyth_python
+from os.path import exists as path_exists
+from .config_rw import config_read, config_write
+from .psrunner import psrun
 
 def cmd_help(level: Literal["all", "config", "install", "uninstall"]):
     match level:
         case "all":
             print("\n".join([
-                "Warm Reminder: Please do not manually modify or delete any pydt files unless you really understand what they do."
-                "pydt config",
-                "pydt install",
-                "pydt uninstall"
+                "Warm Reminder:",
+                "\tPlease do not manually modify or delete any pydt files unless you really understand what they do.",
+                "",
+                "Command:",
+                "\tpydt config \"KEY\"",
+                "\tpydt config \"KEY\" \"VALUE\"",
+                "\tpydt install \"PKG\"",
+                "\tpydt uninstall \"PKG\""
             ]))
         case "list":
             pass
@@ -23,8 +28,11 @@ def cmd_help(level: Literal["all", "config", "install", "uninstall"]):
         case "update":
             pass
 
-def cmd_list(pkglist: list[str], args: list[str]):
+def cmd_list(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
     # args: params after "list"
+
+    pkglist: list[str] = filesdata["pkglist"]
+
     match args.__len__():
         case 0: # print mode
             print("Available Packages:")
@@ -32,8 +40,11 @@ def cmd_list(pkglist: list[str], args: list[str]):
         case _: # unexpected
             cmd_help("list")
 
-def cmd_config(config: dict, args: list[str]):
+def cmd_config(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
     # args: params after "config"
+
+    config: dict = filesdata["config"]
+
     match args.__len__():
         case 0: # help mode
             cmd_help("config")
@@ -44,8 +55,13 @@ def cmd_config(config: dict, args: list[str]):
         case _: 
             cmd_help("config")
 
-def cmd_install(config: dict, pkglist: list[str], envars: dict[str, str], args: list[str]):
+def cmd_install(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
     # args: params after "install"
+
+    config: dict = filesdata["config"]
+    pkglist: list[str] = filesdata["pkglist"]
+    envars: dict[str, dict[str, str]] = filesdata["envars"]
+
     match args.__len__():
         case 0: # help mode
             cmd_help("install"); return
@@ -59,22 +75,68 @@ def cmd_install(config: dict, pkglist: list[str], envars: dict[str, str], args: 
     match args[0]:
         case "poetry":
             cmd: list[str] = [
-                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} install poetry",
-                f"{envars["pipx"]["PIPX_BIN_DIR"]}/poetry config virtualenvs.in-project true"
+                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} install poetry"
             ]
 
-def cmd_uninstall(pkglist: list[str], args: list[str]):
+            state, result = psrun(
+                envars["pipx"] | envars["poetry"],
+                cmd,
+                path_base["path_workdir"],
+                path_base["path_callBat"]
+            )
+
+            if not state or not path_exists(f"{path_base["path_workdir"]}{envars["pipx"]["PIPX_BIN_DIR"]}/poetry.exe"):
+                print("poetry install failed.")
+                if not state: print(result)
+                return
+
+            config["installed"]["poetry"] = f"{path_base["path_workdir"]}{envars["pipx"]["PIPX_BIN_DIR"]}/poetry.exe"
+            config_write(filespath["config"], filesdata["config"])
+
+def cmd_uninstall(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
     # args: params after "install"
+
+    config: dict = filesdata["config"]
+    pkglist: list[str] = filesdata["pkglist"]
+    envars: dict[str, dict[str, str]] = filesdata["envars"]
+
     match args.__len__():
         case 0: # help mode
-            cmd_help("install")
+            cmd_help("install"); return
         case 1: # uninstall mode
-            pass
+            if not args[0] in config["installed"]: print("Requested Package Is Not Installed Yet."); return
         case _: # unexpected
-            cmd_help("install")
+            cmd_help("install"); return
+    
+    # uninstall mode
+    match args[0]:
+        case "poetry":
+            cmd: list[str] = [
+                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} uninstall poetry"
+            ]
 
-def cmd_update(config: dict, pkglist: list[str], envars: dict[str, str], args: list[str]):
+            state, result = psrun(
+                envars["pipx"] | envars["poetry"],
+                cmd,
+                path_base["path_workdir"],
+                path_base["path_callBat"]
+            )
+
+            if not state or path_exists(f"{path_base["path_workdir"]}{envars["pipx"]["PIPX_BIN_DIR"]}/poetry.exe"):
+                print("poetry uninstall failed.")
+                if not state: print(result)
+                return
+
+            config["installed"]["poetry"].pop("poetry")
+            config_write(filespath["config"], filesdata["config"])
+
+def cmd_update(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
     # args: params after "install"
+
+    config: dict = filesdata["config"]
+    pkglist: list[str] = filesdata["pkglist"]
+    envars: dict[str, dict[str, str]] = filesdata["envars"]
+
     match args.__len__():
         case 0: # help mode
             cmd_help("update")
@@ -87,3 +149,26 @@ def cmd_update(config: dict, pkglist: list[str], envars: dict[str, str], args: l
                 return
         case _: # unexpected
             cmd_help("update")
+
+def cmd_debug(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
+    # args: params after "debug"
+
+    config: dict = filesdata["config"]
+    pkglist: list[str] = filesdata["pkglist"]
+    envars: dict[str, dict[str, str]] = filesdata["envars"]
+    
+    if args.__len__() == 0: return
+    match args[0]:
+        case "pipx":
+            cmd: list[str] = [
+                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} {" ".join(args[1:])}"
+            ]
+
+            state, result = psrun(
+                envars["pipx"] | envars["poetry"],
+                cmd,
+                path_base["path_workdir"],
+                path_base["path_callBat"]
+            )
+
+            if not state: print(result); return

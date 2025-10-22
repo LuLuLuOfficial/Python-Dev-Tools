@@ -5,9 +5,11 @@
         "pipx": ""
     },
     "path": {
-        "python_standalone": "",
-        "pyenv_win": "",
-        "pipx": ""
+        "python_standalone": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/python_standalone/python.exe",
+        "pyenv_win": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pyenv_win",
+        "pipx": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pipx/pipx-app.pyz"
     },
-    "installed": []
+    "installed": {
+        "poetry": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pipx/scripts/poetry.exe"
+    }
 }
