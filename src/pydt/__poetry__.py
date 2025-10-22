@@ -28,6 +28,7 @@ path_base: dict[str, str] = {
     "path_callBat": path_callBat
 }
 
+# 一个 Poetry 的 BUG? 也许. 如果基准目录为磁盘根目录, 就无法找到环境变量中 Git 的可执行文件位置.
 if path_callBat.endswith(":/") and params[0].lower() == "new" if params.__len__() else False:
     print("poetry cannot created new project in the root directory of the disk.")
     sys_exit(0)
@@ -38,7 +39,6 @@ if not "poetry" in filesdata["config"]["installed"]:
 
 cmd: list[str] = [
     filesdata["config"]["installed"]["poetry"] + " " + " ".join(params).strip()
-    # "D:\Warehouse\Project\Program\Python\Python-Dev-Tools\pipx\scripts\poetry.exe " + " ".join(params).strip()
 ]
 
 state, result = psrun(filesdata["envars"]["poetry"], cmd, path_workdir, path_callBat)

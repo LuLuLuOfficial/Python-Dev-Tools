@@ -127,7 +127,7 @@ def cmd_uninstall(path_base: dict, filespath: dict, filesdata: dict, args: list[
                 if not state: print(result)
                 return
 
-            config["installed"]["poetry"].pop("poetry")
+            config["installed"].pop("poetry")
             config_write(filespath["config"], filesdata["config"])
 
 def cmd_update(path_base: dict, filespath: dict, filesdata: dict, args: list[str]):
@@ -160,6 +160,19 @@ def cmd_debug(path_base: dict, filespath: dict, filesdata: dict, args: list[str]
     if args.__len__() == 0: return
     match args[0]:
         case "pipx":
+            cmd: list[str] = [
+                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} {" ".join(args[1:])}"
+            ]
+
+            state, result = psrun(
+                envars["pipx"] | envars["poetry"],
+                cmd,
+                path_base["path_workdir"],
+                path_base["path_callBat"]
+            )
+
+            if not state: print(result); return
+        case "poetry":
             cmd: list[str] = [
                 f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} {" ".join(args[1:])}"
             ]

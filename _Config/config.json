@@ -9,7 +9,5 @@
         "pyenv_win": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pyenv_win",
         "pipx": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pipx/pipx-app.pyz"
     },
-    "installed": {
-        "poetry": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pipx/scripts/poetry.exe"
-    }
+    "installed": {}
 }
