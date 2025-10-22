@@ -1,5 +1,6 @@
 __pycache__
 
+/_Config/*
 /pipx/*
 /pyenv_win/*
 /python_standalone/*
