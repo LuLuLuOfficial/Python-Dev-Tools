@@ -75,7 +75,8 @@ def cmd_install(path_base: dict, filespath: dict, filesdata: dict, args: list[st
     match args[0]:
         case "poetry":
             cmd: list[str] = [
-                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} install poetry"
+                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} install poetry",
+                f"{config["path"]["python_standalone"]} {config["path"]["pipx"]} inject poetry poetry-plugin-shell"
             ]
 
             state, result = psrun(

@@ -37,7 +37,6 @@ def psrun(
         )
         remove(ps1path)
     except Exception as E:
-        print(E)
         return False, E
     else:
         return True, None
