@@ -40,7 +40,8 @@ def data_get(path_workdir: str, path_python: str, path_pyScript: str, path_callB
                 "POETRY_CONFIG_DIR": "/pipx/home/venvs/poetry/pypoetry/config",
                 "POETRY_DATA_DIR": "/pipx/home/venvs/poetry/pypoetry",
                 "POETRY_CACHE_DIR": "/pipx/home/venvs/poetry/pypoetry/cache",
-                "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+                "POETRY_VIRTUALENVS_IN_PROJECT": "true",
+                "POETRY_VIRTUALENVS_USE_POETRY_PYTHON": "true"
             },
             "pyenv-win": {
                 "PYENV": "/pyenv_win",
