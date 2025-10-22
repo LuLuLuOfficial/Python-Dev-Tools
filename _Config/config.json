@@ -6,7 +6,7 @@
     },
     "path": {
         "python_standalone": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/python_standalone/python.exe",
-        "pyenv_win": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pyenv_win",
+        "pyenv_win": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pyenv_win/pyenv-win/bin/pyenv.bat",
         "pipx": "D:/Warehouse/Project/Program/Python/Python-Dev-Tools/pipx/pipx-app.pyz"
     },
     "installed": {}

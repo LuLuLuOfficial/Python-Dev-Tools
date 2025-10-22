@@ -17,5 +17,12 @@
         "POETRY_DATA_DIR": "/pipx/home/venvs/poetry/pypoetry",
         "POETRY_CACHE_DIR": "/pipx/home/venvs/poetry/pypoetry/cache",
         "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+    },
+    "pyenv-win": {
+        "PYENV": "/pyenv_win",
+        "PYENV_HOME": "/pyenv_win",
+        "PYENV_ROOT": "/pyenv_win",
+        "HTTP_PROXY": "http://127.0.0.1:7890",
+        "HTTPS_PROXY": "https://127.0.0.1:7890"
     }
 }

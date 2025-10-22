@@ -4,6 +4,7 @@ __pycache__
 /pyenv_win/*
 /python_standalone/*
 /resource/*
+/temp/*
 /test
 
 !.gitkeep

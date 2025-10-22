@@ -79,10 +79,10 @@ def cmd_install(path_base: dict, filespath: dict, filesdata: dict, args: list[st
             ]
 
             state, result = psrun(
-                envars["pipx"] | envars["poetry"],
-                cmd,
-                path_base["path_workdir"],
-                path_base["path_callBat"]
+                path_workdir=path_base["path_workdir"],
+                cwd=path_base["path_callBat"],
+                envars=envars["pipx"] | envars["poetry"],
+                cmd=cmd
             )
 
             if not state or not path_exists(f"{path_base["path_workdir"]}{envars["pipx"]["PIPX_BIN_DIR"]}/poetry.exe"):
@@ -116,10 +116,10 @@ def cmd_uninstall(path_base: dict, filespath: dict, filesdata: dict, args: list[
             ]
 
             state, result = psrun(
-                envars["pipx"] | envars["poetry"],
-                cmd,
-                path_base["path_workdir"],
-                path_base["path_callBat"]
+                path_workdir=path_base["path_workdir"],
+                cwd=path_base["path_callBat"],
+                envars=envars["pipx"] | envars["poetry"],
+                cmd=cmd
             )
 
             if not state or path_exists(f"{path_base["path_workdir"]}{envars["pipx"]["PIPX_BIN_DIR"]}/poetry.exe"):
@@ -165,10 +165,10 @@ def cmd_debug(path_base: dict, filespath: dict, filesdata: dict, args: list[str]
             ]
 
             state, result = psrun(
-                envars["pipx"] | envars["poetry"],
-                cmd,
-                path_base["path_workdir"],
-                path_base["path_callBat"]
+                path_workdir=path_base["path_workdir"],
+                cwd=path_base["path_callBat"],
+                envars=envars["pipx"] | envars["poetry"],
+                cmd=cmd
             )
 
             if not state: print(result); return
@@ -178,10 +178,10 @@ def cmd_debug(path_base: dict, filespath: dict, filesdata: dict, args: list[str]
             ]
 
             state, result = psrun(
-                envars["pipx"] | envars["poetry"],
-                cmd,
-                path_base["path_workdir"],
-                path_base["path_callBat"]
+                path_workdir=path_base["path_workdir"],
+                cwd=path_base["path_callBat"],
+                envars=envars["pipx"] | envars["poetry"],
+                cmd=cmd
             )
 
             if not state: print(result); return
